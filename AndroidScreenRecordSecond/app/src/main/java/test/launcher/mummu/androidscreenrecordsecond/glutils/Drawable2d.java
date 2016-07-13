@@ -7,12 +7,12 @@ public class Drawable2d {
     /**
      * Simple triangle (roughly equilateral, 1.0 per side).
      */
-    private static final float TRIANGLE_COORDS[] = {
+    private static final float TRIANGLE_CORDS[] = {
             0.0f,  0.622008459f,   // top
             -0.5f, -0.311004243f,   // bottom left
             0.5f, -0.311004243f    // bottom right
     };
-    private static final FloatBuffer TRIANGLE_BUF = GlUtil.createFloatBuffer(TRIANGLE_COORDS);
+    private static final FloatBuffer TRIANGLE_BUF = GlUtil.createFloatBuffer(TRIANGLE_CORDS);
 
     /**
      * Simple square, specified as a triangle strip.  The square is centered on (0,0) and has
@@ -69,7 +69,7 @@ public class Drawable2d {
                 mVertexArray = TRIANGLE_BUF;
                 mCoordsPerVertex = 2;
                 mVertexStride = mCoordsPerVertex * SIZEOF_FLOAT;
-                mVertexCount = TRIANGLE_COORDS.length / mCoordsPerVertex;
+                mVertexCount = TRIANGLE_CORDS.length / mCoordsPerVertex;
                 break;
             case RECTANGLE:
                 mVertexArray = RECTANGLE_BUF;
@@ -115,16 +115,12 @@ public class Drawable2d {
     /**
      * Returns the number of position coordinates per vertex.  This will be 2 or 3.
      */
-    public int getCoordsPerVertex() {
+    public int getCordsPerVertex() {
         return mCoordsPerVertex;
     }
 
     @Override
     public String toString() {
-        if (mPrefab != null) {
-            return "[Drawable2d: " + mPrefab + "]";
-        } else {
-            return "[Drawable2d: ...]";
-        }
+        return "[Drawable2d: " + mPrefab + "]";
     }
 }

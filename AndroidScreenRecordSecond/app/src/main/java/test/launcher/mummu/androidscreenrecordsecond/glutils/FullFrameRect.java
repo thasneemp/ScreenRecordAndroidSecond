@@ -170,7 +170,7 @@ public class FullFrameRect {
                 Matrix.scaleM(texMatrix, 0, 0.316f, 1.0f, 1f);
             }
             mProgram.draw(mMvpMatrix, mRectDrawable.getVertexArray(), 0,
-                    mRectDrawable.getVertexCount(), mRectDrawable.getCoordsPerVertex(),
+                    mRectDrawable.getVertexCount(), mRectDrawable.getCordsPerVertex(),
                     mRectDrawable.getVertexStride(),
                     texMatrix, TEX_COORDS_BUF, textureId, TEX_COORDS_STRIDE);
         }

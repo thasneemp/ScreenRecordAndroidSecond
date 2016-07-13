@@ -168,6 +168,7 @@ public class MediaScreenEncoder extends MediaVideoEncoderBase {
                         mSync.notifyAll();
                     }
                 }
+
             }
         };
 

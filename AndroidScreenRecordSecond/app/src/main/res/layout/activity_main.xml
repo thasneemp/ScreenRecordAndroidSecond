@@ -10,19 +10,20 @@
     tools:context="test.launcher.mummu.androidscreenrecordsecond.MainActivity">
 
     <ToggleButton
+        android:id="@+id/record_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/record_button"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="155dp" />
+        android:layout_marginTop="155dp"
+        android:text="New ToggleButton" />
 
     <ToggleButton
+        android:id="@+id/pause_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/pause_button"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:text="New ToggleButton" />
+
 </RelativeLayout>
