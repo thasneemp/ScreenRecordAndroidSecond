@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ToggleButton mRecordButton;
     private ToggleButton mPauseButton;
     private MyBroadcastReceiver mReceiver;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mRecyclerView = (RecyclerView) findViewById(R.id.videosListView);
         mFloatingActionButton = (CustomFAB) findViewById(R.id.actionButton);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         mFloatingActionButton.setOnClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -135,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void queryRecordingStatus() {
         if (DEBUG) Log.v(TAG, "queryRecording:");
         final Intent intent = new Intent(this, ScreenRecorderService.class);
@@ -204,5 +216,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_menu:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
