@@ -43,7 +43,12 @@ public class WaterMarkHeadService extends Service {
 
         textView.setText(text);
         textView.setTextColor(Color.parseColor(textcolor));
-        textView.setTextSize(Float.parseFloat(textsize));
+        if (textsize != null || textsize.equalsIgnoreCase("")) {
+            textView.setTextSize(12);
+        } else {
+            textView.setTextSize(Float.parseFloat(textsize));
+        }
+
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         params = new WindowManager.LayoutParams(

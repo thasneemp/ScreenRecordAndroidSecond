@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import test.launcher.mummu.androidscreenrecordsecond.adapters.VideoAdapter;
+import test.launcher.mummu.androidscreenrecordsecond.camerautils.CameraHeadService;
+import test.launcher.mummu.androidscreenrecordsecond.camerautils.WaterMarkHeadService;
 import test.launcher.mummu.androidscreenrecordsecond.services.ScreenRecorderService;
 import test.launcher.mummu.androidscreenrecordsecond.utils.RecordPreference;
 import test.launcher.mummu.androidscreenrecordsecond.views.CustomFAB;
@@ -106,13 +109,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultCode != Activity.RESULT_OK) {
                 // when no permission
                 Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
-                cancelNotification();
                 return;
             } else {
                 mFloatingActionButton.setImageResource(R.drawable.ic_stop_white_dp);
             }
 
-            startScreenRecorder(resultCode, data);
+            if (RecordPreference.getBooleanData(this, RecordPreference.WATER_MARK_ENABLE)) {
+                startService(new Intent(this, WaterMarkHeadService.class));
+            }
+            if (RecordPreference.getBooleanData(this, RecordPreference.CAMERA_ENABLED)) {
+                startService(new Intent(this, CameraHeadService.class));
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (RecordPreference.getBooleanData(MainActivity.this, RecordPreference.NOTIFICATION_ENABLED)) {
+                        createNotification();
+                    }
+                    startScreenRecorder(resultCode, data);
+                }
+            }, 1000 * 2);
+
         }
     }
 
@@ -179,16 +197,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.actionButton) {
             if (mFloatingActionButton.isChecked()) {
 
-                if (RecordPreference.getBooleanData(this, RecordPreference.NOTIFICATION_ENABLED)) {
-                    createNotification();
-                }
-
                 final MediaProjectionManager manager
                         = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
                 final Intent permissionIntent = manager.createScreenCaptureIntent();
                 startActivityForResult(permissionIntent, REQUEST_CODE_SCREEN_CAPTURE);
                 mFloatingActionButton.setChecked(false);
             } else {
+                stopService(new Intent(this, WaterMarkHeadService.class));
+                stopService(new Intent(this, CameraHeadService.class));
+                cancelNotification();
                 mFloatingActionButton.setImageResource(R.drawable.ic_camera_black_dp);
                 mFloatingActionButton.setChecked(true);
                 final Intent intent = new Intent(MainActivity.this, ScreenRecorderService.class);
@@ -219,9 +236,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
 
                         .setStyle(new NotificationCompat.BigTextStyle())
-                        .addAction(R.drawable.ic_action_pause,
-                                getString(R.string.app_name), pausePendingIntent)
-                        .addAction(R.drawable.ic_action_stop, getString(R.string.app_name), stopPendingIntent);
+                        .addAction(R.drawable.ic_action_pause, "Pause", pausePendingIntent)
+                        .addAction(R.drawable.ic_action_stop, "Stop", stopPendingIntent);
 
 
 // Gets an instance of the NotificationManager service
@@ -274,7 +290,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.settings_menu:
                 startActivity(new Intent(this, SettingsActivity.class));
-//                startService(new Intent(this, WaterMarkHeadService.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

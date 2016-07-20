@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,6 +27,8 @@
         <service android:name=".services.ScreenRecorderService" />
         <service android:name=".camerautils.CameraHeadService" />
         <service android:name=".camerautils.WaterMarkHeadService" />
+
+        <activity android:name=".MainActivity" />
 
     </application>
 

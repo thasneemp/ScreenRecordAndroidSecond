@@ -27,7 +27,7 @@ public class MediaScreenEncoder extends MediaVideoEncoderBase {
 
     private static final String MIME_TYPE = "video/avc";
     // parameters for recording
-    private static final int FRAME_RATE = 25;
+    private static final int FRAME_RATE = 30;
 
     private MediaProjection mMediaProjection;
     private final int mDensity;
