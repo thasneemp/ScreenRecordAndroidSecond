@@ -28,6 +28,13 @@
         <service android:name=".camerautils.CameraHeadService" />
         <service android:name=".camerautils.WaterMarkHeadService" />
 
+        <receiver android:name=".NotificationBroadCastReceiver">
+            <intent-filter>
+                <action android:name="com.serenegiant.service.ScreenRecorderService.ACTION_STOP" />
+                <action android:name="com.serenegiant.service.ScreenRecorderService.ACTION_PAUSE" />
+                <action android:name="com.serenegiant.service.ScreenRecorderService.ACTION_RESUME" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".MainActivity" />
 
     </application>

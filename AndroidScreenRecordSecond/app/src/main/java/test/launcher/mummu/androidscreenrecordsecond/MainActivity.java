@@ -219,20 +219,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Sets up the Snooze and Dismiss action buttons that will appear in the
         // big view of the notification.
-        Intent dismissIntent = new Intent(this, ScreenRecorderService.class);
+        Intent dismissIntent = new Intent(this, NotificationBroadCastReceiver.class);
         dismissIntent.setAction(ScreenRecorderService.ACTION_STOP);
-        PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, dismissIntent, 0);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 0, dismissIntent, 0);
 
-        Intent snoozeIntent = new Intent(this, ScreenRecorderService.class);
+        Intent snoozeIntent = new Intent(this, NotificationBroadCastReceiver.class);
         snoozeIntent.setAction(ScreenRecorderService.ACTION_PAUSE);
-        PendingIntent pausePendingIntent = PendingIntent.getService(this, 0, snoozeIntent, 0);
+        PendingIntent pausePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
 
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_camera_black_dp)
                         .setContentTitle("Screen Recording")
-                        .setContentText("Your screen is now recording")
+                        .setContentText("Your screen is now recording").setOngoing(true)
                         .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
 
                         .setStyle(new NotificationCompat.BigTextStyle())
