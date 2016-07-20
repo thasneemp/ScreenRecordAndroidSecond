@@ -1,12 +1,16 @@
 package test.launcher.mummu.androidscreenrecordsecond;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 
 import test.launcher.mummu.androidscreenrecordsecond.adapters.VideoAdapter;
 import test.launcher.mummu.androidscreenrecordsecond.services.ScreenRecorderService;
+import test.launcher.mummu.androidscreenrecordsecond.utils.RecordPreference;
 import test.launcher.mummu.androidscreenrecordsecond.views.CustomFAB;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
 
     private static final int REQUEST_CODE_SCREEN_CAPTURE = 1;
-
+    public static int NOTIFICATION_ID = 001;
     private RecyclerView mRecyclerView;
 
 
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultCode != Activity.RESULT_OK) {
                 // when no permission
                 Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+                cancelNotification();
                 return;
             } else {
                 mFloatingActionButton.setImageResource(R.drawable.ic_stop_white_dp);
@@ -108,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             startScreenRecorder(resultCode, data);
         }
+    }
+
+    private void cancelNotification() {
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.cancel(NOTIFICATION_ID);
     }
 
     private final CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -166,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.actionButton) {
             if (mFloatingActionButton.isChecked()) {
+
+                if (RecordPreference.getBooleanData(this, RecordPreference.NOTIFICATION_ENABLED)) {
+                    createNotification();
+                }
+
                 final MediaProjectionManager manager
                         = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
                 final Intent permissionIntent = manager.createScreenCaptureIntent();
@@ -179,6 +196,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startService(intent);
             }
         }
+    }
+
+    private void createNotification() {
+
+        // Sets up the Snooze and Dismiss action buttons that will appear in the
+        // big view of the notification.
+        Intent dismissIntent = new Intent(this, ScreenRecorderService.class);
+        dismissIntent.setAction(ScreenRecorderService.ACTION_STOP);
+        PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, dismissIntent, 0);
+
+        Intent snoozeIntent = new Intent(this, ScreenRecorderService.class);
+        snoozeIntent.setAction(ScreenRecorderService.ACTION_PAUSE);
+        PendingIntent pausePendingIntent = PendingIntent.getService(this, 0, snoozeIntent, 0);
+
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_camera_black_dp)
+                        .setContentTitle("Screen Recording")
+                        .setContentText("Your screen is now recording")
+                        .setDefaults(Notification.DEFAULT_ALL) // requires VIBRATE permission
+
+                        .setStyle(new NotificationCompat.BigTextStyle())
+                        .addAction(R.drawable.ic_action_pause,
+                                getString(R.string.app_name), pausePendingIntent)
+                        .addAction(R.drawable.ic_action_stop, getString(R.string.app_name), stopPendingIntent);
+
+
+// Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+        mNotifyMgr.notify(NOTIFICATION_ID, builder.build());
+
     }
 
     private void updateRecording(final boolean isRecording, final boolean isPausing) {
@@ -223,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.settings_menu:
                 startActivity(new Intent(this, SettingsActivity.class));
+//                startService(new Intent(this, WaterMarkHeadService.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

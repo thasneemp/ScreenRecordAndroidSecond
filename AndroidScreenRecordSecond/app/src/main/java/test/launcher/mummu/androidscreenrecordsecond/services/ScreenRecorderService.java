@@ -14,6 +14,7 @@ import test.launcher.mummu.androidscreenrecordsecond.media.MediaAudioEncoder;
 import test.launcher.mummu.androidscreenrecordsecond.media.MediaEncoder;
 import test.launcher.mummu.androidscreenrecordsecond.media.MediaMuxerWrapper;
 import test.launcher.mummu.androidscreenrecordsecond.media.MediaScreenEncoder;
+import test.launcher.mummu.androidscreenrecordsecond.utils.RecordPreference;
 
 /**
  * Created by muhammed on 7/12/2016.
@@ -47,7 +48,7 @@ public class ScreenRecorderService extends IntentService {
     public void onCreate() {
         super.onCreate();
         if (DEBUG) Log.v(TAG, "onCreate:");
-        mMediaProjectionManager = (MediaProjectionManager)getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        mMediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
     }
 
     @Override
@@ -79,12 +80,14 @@ public class ScreenRecorderService extends IntentService {
         result.setAction(ACTION_QUERY_STATUS_RESULT);
         result.putExtra(EXTRA_QUERY_RESULT_RECORDING, isRecording);
         result.putExtra(EXTRA_QUERY_RESULT_PAUSING, isPausing);
-        if (DEBUG) Log.v(TAG, "sendBroadcast:isRecording=" + isRecording + ",isPausing=" + isPausing);
+        if (DEBUG)
+            Log.v(TAG, "sendBroadcast:isRecording=" + isRecording + ",isPausing=" + isPausing);
         sendBroadcast(result);
     }
 
     /**
      * start screen recording as .mp4 file
+     *
      * @param intent
      */
     private void startScreenRecord(final Intent intent) {
@@ -106,7 +109,7 @@ public class ScreenRecorderService extends IntentService {
                             new MediaScreenEncoder(sMuxer, mMediaEncoderListener,
                                     projection, metrics.widthPixels, metrics.heightPixels, density);
                         }
-                        if (true) {
+                        if (RecordPreference.getBooleanData(getApplicationContext(), RecordPreference.AUDIO_RECORD_ENNABLED)) {
                             // for audio capturing
                             new MediaAudioEncoder(sMuxer, mMediaEncoderListener);
                         }

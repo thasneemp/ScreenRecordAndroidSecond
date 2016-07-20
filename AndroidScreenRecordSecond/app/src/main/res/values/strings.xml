@@ -64,4 +64,7 @@
     <string name="common_settings">Common Settings</string>
     <string name="enableWatermark">Enable Watermark</string>
     <string name="pip_camera">Camera</string>
+    <string name="text_size">Text size</string>
+    <string name="preview">Preview</string>
+    <string name="show_notification">Show Notification</string>
 </resources>

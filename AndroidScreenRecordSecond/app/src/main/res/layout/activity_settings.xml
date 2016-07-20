@@ -39,7 +39,7 @@
             android:layout_marginTop="10dp">
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/checkBoxAudio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right" />
@@ -64,7 +64,7 @@
             android:layout_marginTop="10dp">
 
             <CheckBox
-                android:id="@+id/chesckBox"
+                android:id="@+id/chesckBoxCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right" />
@@ -82,9 +82,10 @@
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
+
             android:layout_below="@id/frametwo"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
@@ -94,7 +95,32 @@
                 android:layout_height="wrap_content">
 
                 <CheckBox
-                    android:id="@+id/checkBaaox"
+                    android:id="@+id/checkBoxNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right" />
+
+                <TextView
+                    android:id="@+id/textViaddaew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/checkBox"
+                    android:layout_gravity="left|center"
+                    android:text="@string/show_notification"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/settings_text_size" />
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <CheckBox
+                    android:id="@+id/checkBoxWaterMark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right" />
@@ -114,29 +140,32 @@
             </FrameLayout>
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editTextWatermark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom" />
+                android:layout_gravity="left|bottom"
+                android:visibility="visible" />
 
             <RadioGroup
+                android:id="@+id/colorRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
 
-                android:padding="10dp">
+                android:orientation="horizontal"
+                android:padding="10dp"
+
+                android:visibility="visible">
 
                 <RadioButton
-                    android:id="@+id/imageView"
+                    android:id="@+id/radioBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
 
-                    android:button="@drawable/radio_blue"
-                    android:checked="true" />
+                    android:button="@drawable/radio_blue" />
 
                 <RadioButton
-                    android:id="@+id/imageView2"
+                    android:id="@+id/radioRed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -144,14 +173,14 @@
                     android:button="@drawable/radio_red" />
 
                 <RadioButton
-                    android:id="@+id/imageView3"
+                    android:id="@+id/radioGreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:button="@drawable/radio_green" />
 
                 <RadioButton
-                    android:id="@+id/imageView4"
+                    android:id="@+id/radioOrange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
@@ -159,13 +188,47 @@
                     android:button="@drawable/radio_orange" />
 
                 <RadioButton
-                    android:id="@+id/imageView5"
+                    android:id="@+id/radioPink"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:button="@drawable/radio_pink"
-                    android:layout_width="wrap_content" />
+                    android:button="@drawable/radio_pink" />
             </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/sizeFixLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_size"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/settings_text_size" />
+
+                <SeekBar
+                    android:id="@+id/textSizeSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/previewTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="47dp"
+            android:text="@string/preview"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
