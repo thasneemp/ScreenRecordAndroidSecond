@@ -60,4 +60,8 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="common_settings">Common Settings</string>
+    <string name="enableWatermark">Enable Watermark</string>
+    <string name="pip_camera">Camera</string>
 </resources>
